@@ -1,0 +1,82 @@
+-- CREATE DATABASE UserManagementDB;
+
+USE UserManagementDB
+
+create table UpretiUsers(
+User_Id int Identity(1,1) Primary Key,
+FirstName varchar(20),
+MiddleName varchar(20),
+LastName varchar(20),
+Gender varchar(10),
+DateOfJoining date,
+DOB date not null,
+Email varchar(50) ,
+Phone varchar(14),
+AlternatePhone varchar(14),
+ImagePath varchar(100),
+Password varchar(500),
+IsActive Bit Default 0,
+IsDeleted Bit Default 0,
+Created_at DateTime,
+Modified_at DateTime,
+ResetPasswordToken varchar(400),
+ResetExpiryToken DateTime
+
+);
+
+
+create table MasterHimanshuAddress(
+AId int Primary Key not null,
+AType varchar(10)
+);
+
+
+create table HimanshuAddress(
+
+User_Id int Foreign Key References UpretiUsers(User_Id),
+AId int Foreign Key References MasterHimanshuAddress(AId),
+City varchar(30),
+State varchar(30),
+Country varchar(30),
+ZipCode int ,
+);
+insert into UpretiUsers values
+('hemant','Chandr','Upreti','Male','2024-04-09','2001-11-17','himanshuupreti2001@gmail.com',9205252763,9540420133,'abc','abc@2001',0,0,'2001-11-17','2015-11-18','abcd','2024-07-24');
+insert into MasterHimanshuAddress values
+(1,'Address1'),
+(2,'Address2');
+select * from UpretiUsers;
+select * from HimanshuAddress;
+delete from UpretiUsers where User_Id=2;
+delete from HimanshuAddress where User_Id=2;
+insert into HimanshuAddress(User_Id,AId,City,State,Country,ZipCode) Values
+(3,2,'Delhi','Delhi','India',110043)
+
+EXEC sp_help 'UpretiUsers';
+
+
+ALTER TABLE UpretiUsers
+ALTER COLUMN Phone VARCHAR(30);
+
+
+
+CREATE PROCEDURE SetUserDeletedStatus
+    @UserId INT
+AS
+BEGIN
+    
+    IF EXISTS (SELECT 1 FROM UpretiUsers WHERE User_Id = @UserId)
+    BEGIN
+        
+        UPDATE UpretiUsers
+        SET IsDeleted = 1,
+            Modified_at = GETDATE()
+        WHERE User_Id = @UserId;
+        
+        PRINT 'User deleted successfully.';
+    END
+    ELSE
+    BEGIN
+        PRINT 'User not found.';
+    END
+END;
