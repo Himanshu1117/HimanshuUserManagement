@@ -1,0 +1,30 @@
+﻿using System;
+using System.Collections.Generic;
+
+namespace Data.Model.Entities
+{
+    public class User
+    {
+        public int User_Id { get; set; }
+        public string FirstName { get; set; }
+        public string MiddleName { get; set; }
+        public string LastName { get; set; }
+        public string Gender { get; set; }
+        public DateOnly DateOfJoining { get; set; }
+        public DateOnly DOB { get; set; }
+        public string Email { get; set; }
+        public string Phone { get; set; }
+        public string AlternatePhone { get; set; }
+        public string ImagePath { get; set; }
+        public string Password { get; set; }
+        public Boolean IsActive { get; set; }
+        public Boolean IsDeleted { get; set; }
+        public DateTime Created_at { get; set; }= DateTime.UtcNow;
+        public DateTime Modified_at { get; set; }= DateTime.UtcNow;
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetExpiryToken { get; set; }= DateTime.UtcNow;
+
+        // Navigation properties
+        public ICollection<Address> Addresses { get; set; }
+    }
+}
